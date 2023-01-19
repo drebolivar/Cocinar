@@ -28,6 +28,19 @@ function App() {
     })
   }, [])
 
+  const handleView = (id) => {
+    const recipesClone = [...recipes]
+    recipesClone.forEach((recipe) => {
+      if (recipe.id === id) {
+        recipe.viewing = !recipe.viewing
+      } else {
+        recipe.viewing = false
+      }
+    })
+
+    setRecipes(recipesClone)
+  }
+
   return (
     <div className="App">
       <h1>My Recipes</h1>
@@ -55,7 +68,9 @@ function App() {
             )}
 
             <div className="buttons">
-              <button>View {recipe.viewing ? 'less' : 'more'}</button>
+              <button onClick={() => handleView(recipe.id)}>
+                View {recipe.viewing ? 'less' : 'more'}
+              </button>
               <button className="remove">Remove</button>
             </div>
           </div>
