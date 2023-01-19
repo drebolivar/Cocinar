@@ -1,6 +1,12 @@
 import { db } from './firebase.config'
 import { useState, useEffect } from 'react'
-import { collection, onSnapshot } from 'firebase/firestore'
+import {
+  collection,
+  onSnapshot,
+  doc,
+  addDoc,
+  deleteDoc
+} from 'firebase/firestore'
 
 function App() {
   const [recipes, setRecipes] = useState([])
@@ -43,6 +49,20 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    if (!form.title || !form.desc || !form.ingredients || !form.steps) {
+      alert('Fill out all fields')
+      return
+    }
+    addDoc(recipesCollectionRef, form)
+
+    setForm({
+      title: '',
+      desc: '',
+      ingredients: [],
+      steps: []
+    })
+
+    setPopupActive(false)
   }
 
   const handleIngredient = (e, i) => {
@@ -77,6 +97,10 @@ function App() {
     })
   }
 
+  const removeRecipe = (id) => {
+    deleteDoc(doc(db, 'recipes', id))
+  }
+
   return (
     <div className="App">
       <h1>My Recipes</h1>
@@ -107,7 +131,12 @@ function App() {
               <button onClick={() => handleView(recipe.id)}>
                 View {recipe.viewing ? 'less' : 'more'}
               </button>
-              <button className="remove">Remove</button>
+              <button
+                className="remove"
+                onClick={() => removeRecipe(recipe.id)}
+              >
+                Remove
+              </button>
             </div>
           </div>
         ))}
