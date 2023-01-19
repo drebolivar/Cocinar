@@ -51,6 +51,10 @@ function App() {
                 ))}
               </ol>
             </div>
+
+            <div className="buttons">
+              <button>View {recipe.viewing ? 'less' : 'more'}</button>
+            </div>
           </div>
         ))}
       </div>
