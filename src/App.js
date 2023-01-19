@@ -7,7 +7,7 @@ function App() {
   const [form, setForm] = useState({
     title: '',
     desc: '',
-    ingredients: [],
+    ingredients: [''],
     steps: []
   })
   const [popupActive, setPopupActive] = useState(false)
@@ -45,10 +45,42 @@ function App() {
     e.preventDefault()
   }
 
+  const handleIngredient = (e, i) => {
+    const ingredientsClone = [...form.ingredients]
+    ingredientsClone[i] = e.target.value
+    setForm({
+      ...form,
+      ingredients: ingredientsClone
+    })
+  }
+
+  const handleIngredientCount = () => {
+    setForm({
+      ...form,
+      ingredients: [...form.ingredients, '']
+    })
+  }
+
+  const handleStep = (e, i) => {
+    const stepsClone = [...form.steps]
+    stepsClone[i] = e.target.value
+    setForm({
+      ...form,
+      steps: stepsClone
+    })
+  }
+
+  const handleStepCount = () => {
+    setForm({
+      ...form,
+      steps: [...form.steps, '']
+    })
+  }
+
   return (
     <div className="App">
       <h1>My Recipes</h1>
-      <button> Add Recipe</button>
+      <button onClick={() => setPopupActive(!popupActive)}>Add Recipe</button>
       <div className="recipes">
         {recipes.map((recipe, i) => (
           <div className="recipe" key={recipe.id}>
@@ -90,13 +122,56 @@ function App() {
                 <input
                   type="text"
                   value={form.title}
-                  onChange={(e) =>
-                    setForm({ ...form, title: er.target.valaue })
-                  }
+                  onChange={(e) => setForm({ ...form, title: e.target.value })}
                 />
               </div>
+              <div className="form-group">
+                <label>Description</label>
+                <textarea
+                  type="text"
+                  value={form.desc}
+                  onChange={(e) => setForm({ ...form, desc: e.target.value })}
+                />
+              </div>
+              <div className="form-group">
+                <label>Ingredients</label>
+                {form.ingredients.map((ingredient, i) => (
+                  <input
+                    type="text"
+                    key={i}
+                    value={ingredient}
+                    onChange={(e) => handleIngredient(e, i)}
+                  />
+                ))}
+                <button type="button" onClick={handleIngredientCount}>
+                  Add Ingredient
+                </button>
+              </div>
+              <div className="form-group">
+                <label>Steps</label>
+                {form.steps.map((step, i) => (
+                  <input
+                    type="textarea"
+                    key={i}
+                    value={step}
+                    onChange={(e) => handleStep(e, i)}
+                  />
+                ))}
+                <button type="button" onClick={handleStepCount}>
+                  Add Step
+                </button>
+              </div>
+              <div className="buttons">
+                <button type="submit">Submit</button>
+                <button
+                  type="button"
+                  class="remove"
+                  onClick={() => setPopupActive(false)}
+                >
+                  Close
+                </button>
+              </div>
             </form>
-            {JSON.stringify(form)}
           </div>
         </div>
       )}
