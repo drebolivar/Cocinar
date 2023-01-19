@@ -41,6 +41,10 @@ function App() {
     setRecipes(recipesClone)
   }
 
+  const handleSubmit = (e) => {
+    e.preventDefault()
+  }
+
   return (
     <div className="App">
       <h1>My Recipes</h1>
@@ -76,6 +80,26 @@ function App() {
           </div>
         ))}
       </div>
+      {popupActive && (
+        <div className="popup">
+          <div className="popup-inner">
+            <h2>Add a new recipe</h2>
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label>Title</label>
+                <input
+                  type="text"
+                  value={form.title}
+                  onChange={(e) =>
+                    setForm({ ...form, title: er.target.valaue })
+                  }
+                />
+              </div>
+            </form>
+            {JSON.stringify(form)}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
